@@ -3,6 +3,7 @@ package com.danilodev.desafiocrud.dto;
 import com.danilodev.desafiocrud.entities.Client;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDate;
 
@@ -17,6 +18,7 @@ public class ClientDTO {
 
     @PastOrPresent(message = "Não pode ser data futura")
     private LocalDate birthDate;
+    @PositiveOrZero(message = "zeros filhos ou maior que zero")
     private Integer children;
 
     public ClientDTO(){
