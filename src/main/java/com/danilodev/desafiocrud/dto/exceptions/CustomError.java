@@ -1,4 +1,4 @@
-package com.danilodev.desafiocrud.dto;
+package com.danilodev.desafiocrud.dto.exceptions;
 
 import java.time.Instant;
 
