@@ -4,12 +4,15 @@ package com.danilodev.desafiocrud.services;
 import com.danilodev.desafiocrud.dto.ClientDTO;
 import com.danilodev.desafiocrud.entities.Client;
 import com.danilodev.desafiocrud.repositories.ClientRepository;
+import com.danilodev.desafiocrud.services.exceptions.DataBaseException;
 import com.danilodev.desafiocrud.services.exceptions.ResourceNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -50,6 +53,19 @@ public class ClientService {
         }
         catch(EntityNotFoundException e) {
             throw new ResourceNotFoundException("Cliente inexistente");
+        }
+    }
+
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new ResourceNotFoundException("Cliente inexistente");
+        }
+        try {
+            repository.deleteById(id);
+        }
+        catch (DataIntegrityViolationException e) {
+            throw new DataBaseException("Falha de integridade referencial");
         }
     }
 
